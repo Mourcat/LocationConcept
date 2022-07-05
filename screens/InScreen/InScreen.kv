@@ -1,0 +1,122 @@
+#: import Animation kivy.animation.Animation
+#: import Win kivy.core.window.Window
+
+#: set black (0, 0, 0, 1)
+#: set deep_amber (.75, .48, .05, 1)
+
+
+<InScreen>:
+    map: map
+    name: 'inscreen'
+    on_enter:
+        Animation(pos=(1.3*card.width, Win.width/2)).start(card)
+	
+	MDFloatLayout:
+	    id: full_lay
+
+		MDToolbar:
+			title: app.title
+			left_action_items: [['menu', lambda x: app.root.ids.nav_drawer.set_state('open')]]
+			right_action_items: [['wrench', lambda x: x]]
+			elevation: 12
+			md_bg_color: black
+			specific_text_color: app.theme_cls.primary_color
+			pos_hint: {'top': 1}
+
+		MDCard:
+		    id: card
+		    size_hint: None, .5
+            radius: [dp(16),]
+            md_bg_color: black
+            elevation: 12
+            width: .22 * Win.width
+            pos: dp(70), dp(200)
+
+
+            MDFloatLayout:
+
+                MDLabel:
+                    id: info_lbl
+                    text: "Let's find location  ".upper()
+                    font_style: 'H5'
+                    font_size: dp(27)
+                    size_hint_y: None
+                    halign: 'right'
+                    height: self.texture_size[1]
+                    theme_text_color: 'Custom'
+                    italic: True
+                    text_color: deep_amber
+                    pos_hint: {'center_x': .5, 'center_y': .92}
+
+                MDBoxLayout:
+                    adaptive_size: True
+                    pos_hint: {'center_x': .5, 'center_y': .7}
+                    spacing: dp(12)
+                    canvas:
+                        Color:
+                            rgba: deep_amber
+                        Line:
+                            rounded_rectangle:
+                                self.x-dp(8), self.y, self.width + dp(16), self.height, dp(8)
+
+                    MDLabel:
+                        id: plus_lbl
+                        text: ' +'
+                        halign: 'right'
+                        font_style: 'Subtitle1'
+                        font_size: dp(25)
+                        size_hint: None, None
+                        size: dp(30), phone_num_inp.height
+                        theme_text_color: 'Custom'
+                        text_color: app.theme_cls.primary_light
+                        opacity: .2
+
+                    TextInput:
+                        id: phone_num_inp
+                        hint_text: 'Type phone number here'
+                        font_size: dp(25)
+                        foreground_color: app.theme_cls.primary_light
+                        background_color: 0, 0, 0, 0
+                        multiline: False
+                        size_hint: None, None
+                        height: self.minimum_height
+                        width: dp(300)
+                        input_filter: 'int'
+                        on_text:
+                            Animation(opacity=1).start(plus_lbl)
+                            Animation(opacity=1).start(define_btn)
+                            root.btn_toggle(self)
+
+                MDBoxLayout:
+                    adaptive_height: True
+                    pos_hint: {'center_x': .5, 'center_y': .42}
+                    spacing: dp(12)
+
+                    MDLabel:
+                        id: geo_lbl
+                        font_style: 'Button'
+                        font_size: dp(25)
+                        theme_text_color: 'Custom'
+                        text_color: app.theme_cls.primary_light
+                        halign: 'center'
+
+                MDRaisedButton:
+                    id: define_btn
+                    text: 'RECIEVE DATA'
+                    font_size: dp(25)
+                    pos_hint: {'center_x': .5, 'y': .05}
+                    opacity: .2
+                    md_bg_color: app.theme_cls.primary_dark
+                    disabled: True
+                    on_release:
+                        root.data_reciever()
+                        Animation(d=2, opacity=1).start(map)
+
+        MDCard:
+            id: map
+            size_hint: .5, .9
+            pos_hint: {'center_x': .67, 'center_y': .47}
+            opacity: 0
+            radius: dp(50)
+            on_opacity:
+                root.map_opacity_control(self)
