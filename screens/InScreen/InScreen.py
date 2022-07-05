@@ -39,8 +39,8 @@ class InScreen(MDScreen):
 		self.phone_data['lng'] = response[0]['geometry']['lng']
 		self.ids.geo_lbl.text = f"{self.phone_data['country']} {self.phone_data['service']}\n" \
 								f"{self.phone_data['lat']} {self.phone_data['lng']}"
-		self.map = MapView(zoom=2, lat=self.phone_data['lat'], lon=self.phone_data['lng'])
-		self.ids.map.add_widget(self.map)
+		self.map = MapView(zoom=4, lat=self.phone_data['lat'], lon=self.phone_data['lng'])
+		self.ids.map_card.add_widget(self.map)
 
 	def btn_toggle(self, instance):
 		if instance.text:

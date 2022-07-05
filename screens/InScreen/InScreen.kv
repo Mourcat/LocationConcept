@@ -6,7 +6,6 @@
 
 
 <InScreen>:
-    map: map
     name: 'inscreen'
     on_enter:
         Animation(pos=(1.3*card.width, Win.width/2)).start(card)
@@ -110,10 +109,10 @@
                     disabled: True
                     on_release:
                         root.data_reciever()
-                        Animation(d=2, opacity=1).start(map)
+                        Animation(d=2, opacity=1).start(map_card)
 
         MDCard:
-            id: map
+            id: map_card
             size_hint: .5, .9
             pos_hint: {'center_x': .67, 'center_y': .47}
             opacity: 0
